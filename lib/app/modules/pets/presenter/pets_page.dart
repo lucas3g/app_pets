@@ -28,9 +28,13 @@ class _PetsPageState extends State<PetsPage> {
     super.initState();
     widget.petsBloc.add(GetPetsAPIEvent());
 
-    sub = widget.petsBloc.stream.listen((state) {
+    sub = widget.petsBloc.stream.listen((state) async {
       if (state is PetsErrorState) {
         MySnackBar(message: state.message);
+      }
+      if (state is AuthLogOutState) {
+        await Future.delayed(const Duration(milliseconds: 300));
+        await Modular.to.pushNamedAndRemoveUntil('/auth/', (p0) => false);
       }
     });
   }
@@ -39,6 +43,18 @@ class _PetsPageState extends State<PetsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          BlocBuilder<PetsBloc, PetsStates>(
+              bloc: widget.petsBloc,
+              builder: (context, state) {
+                return IconButton(
+                  onPressed: () {
+                    widget.petsBloc.add(AuthLogOutEvent());
+                  },
+                  icon: const Icon(Icons.logout_rounded),
+                );
+              })
+        ],
         title: Text(
           'Pets for adoption',
           style: AppTheme.textStyles.appBar,
@@ -93,7 +109,8 @@ class _PetsPageState extends State<PetsPage> {
               child: BlocBuilder<PetsBloc, PetsStates>(
                   bloc: widget.petsBloc,
                   builder: (context, state) {
-                    if (state is! PetsSuccessState) {
+                    if (state is! PetsSuccessState &&
+                        state is! AuthLogOutState) {
                       return LoadingWidget(
                           size: Size(context.screenHeight, 200), radius: 10);
                     }

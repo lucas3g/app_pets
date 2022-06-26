@@ -26,6 +26,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   final emailController = TextEditingController();
+  GlobalKey<FormState> keyEmail = GlobalKey<FormState>();
 
   late StreamSubscription sub;
 
@@ -77,26 +78,36 @@ class _AuthPageState extends State<AuthPage> {
                   children: [
                     const Text('App access'),
                     const SizedBox(height: 15),
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        counterText: '',
-                        hintText: 'Type your e-mail',
-                        label: const Text('Email'),
-                        filled: true,
-                        isDense: true,
-                        fillColor: Colors.transparent,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.grey.shade700,
+                    Form(
+                      key: keyEmail,
+                      child: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: TextInputType.emailAddress,
+                        controller: emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Email cannot be empty';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          counterText: '',
+                          hintText: 'Type your e-mail',
+                          label: const Text('Email'),
+                          filled: true,
+                          isDense: true,
+                          fillColor: Colors.transparent,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade700,
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: AppTheme.colors.primary,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: AppTheme.colors.primary,
+                            ),
                           ),
                         ),
                       ),
@@ -105,11 +116,18 @@ class _AuthPageState extends State<AuthPage> {
                     BlocBuilder<AuthBloc, AuthStates>(
                         bloc: widget.authBloc,
                         builder: (context, state) {
-                          return SizedBox(
-                            width: context.screenWidth,
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 600),
+                            width: state is AuthLoadingState ||
+                                    state is AuthSuccessState
+                                ? 40
+                                : context.screenWidth,
                             height: 40,
-                            child: ElevatedButton.icon(
-                              onPressed: () {
+                            child: GestureDetector(
+                              onTap: () {
+                                if (!keyEmail.currentState!.validate()) {
+                                  return;
+                                }
                                 widget.authBloc.add(
                                   AuthLoginEvent(
                                     loginParams: LoginParams(
@@ -118,11 +136,42 @@ class _AuthPageState extends State<AuthPage> {
                                   ),
                                 );
                               },
-                              icon: const Icon(Icons.login_rounded),
-                              label: const Text('Sign In'),
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    state is AuthLoadingState ||
+                                            state is AuthSuccessState
+                                        ? 40
+                                        : 10,
+                                  ),
+                                  color: AppTheme.colors.primary,
+                                ),
+                                child: state is AuthLoadingState
+                                    ? const Center(
+                                        child: SizedBox(
+                                          height: 30,
+                                          width: 30,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )
+                                    : state is AuthSuccessState
+                                        ? const Icon(
+                                            Icons.check_rounded,
+                                            color: Colors.white,
+                                            size: 20,
+                                          )
+                                        : Text(
+                                            'Sign in',
+                                            style:
+                                                AppTheme.textStyles.buttonSigin,
+                                          ),
+                              ),
                             ),
                           );
-                        }),
+                        })
                   ],
                 ),
                 const SizedBox(),

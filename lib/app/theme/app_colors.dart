@@ -6,6 +6,7 @@ abstract class AppColors {
   Color get title;
   Color get body;
   Color get transparent;
+  Color get buttonSignin;
 
   MaterialColor get primary;
 
@@ -53,4 +54,7 @@ class AppColorDefault implements AppColors {
 
   @override
   Color get transparent => Colors.transparent;
+
+  @override
+  Color get buttonSignin => Colors.white;
 }

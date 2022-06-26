@@ -26,6 +26,10 @@ abstract class PetsStates {
     );
   }
 
+  AuthLogOutState logOut() {
+    return AuthLogOutState(filter: filter, pets: pets);
+  }
+
   List<PetsEntity> get filtredList {
     if (filter.isEmpty) {
       return pets;
@@ -66,4 +70,8 @@ class PetsErrorState extends PetsStates {
     required super.pets,
     required super.filter,
   });
+}
+
+class AuthLogOutState extends PetsStates {
+  AuthLogOutState({required super.pets, required super.filter});
 }

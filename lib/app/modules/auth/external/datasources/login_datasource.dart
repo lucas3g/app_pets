@@ -21,6 +21,8 @@ class LoginDataSource implements ILoginDataSource {
       orElse: () => '',
     );
 
+    await Future.delayed(const Duration(milliseconds: 600));
+
     if (result.isNotEmpty) {
       return result;
     }

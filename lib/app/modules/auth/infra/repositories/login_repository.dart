@@ -17,7 +17,7 @@ class LoginRepository implements ILoginRepository {
   Future<Either<IAuthException, AuthEntity>> login(
       {required LoginParams params}) async {
     try {
-      final Map result = await loginDataSource.login(email: params.email);
+      final result = await loginDataSource.login(email: params.email);
 
       if (result.isEmpty) {
         return left(const AuthException(message: 'Email não encontrado'));

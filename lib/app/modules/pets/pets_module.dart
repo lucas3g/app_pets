@@ -28,7 +28,7 @@ class PetsModule extends Module {
 
     //BLOC
     Bind.factory<PetsBloc>(
-      (i) => PetsBloc(getPetsUseCase: i()),
+      (i) => PetsBloc(getPetsUseCase: i(), localStorage: i()),
     ),
   ];
 

@@ -8,6 +8,7 @@ abstract class AppTextStyles {
   TextStyle get title;
   TextStyle get body;
   TextStyle get titleList;
+  TextStyle get buttonSigin;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
@@ -26,4 +27,10 @@ class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get titleList => GoogleFonts.roboto(
       fontSize: 20, fontWeight: FontWeight.w700, color: AppTheme.colors.title);
+
+  @override
+  TextStyle get buttonSigin => GoogleFonts.roboto(
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+      color: AppTheme.colors.buttonSignin);
 }

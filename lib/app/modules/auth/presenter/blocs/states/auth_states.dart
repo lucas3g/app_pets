@@ -21,3 +21,5 @@ class AuthErrorState extends AuthStates {
     required this.message,
   });
 }
+
+class AuthLogOutState extends AuthStates {}

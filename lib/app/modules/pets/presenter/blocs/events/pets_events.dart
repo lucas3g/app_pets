@@ -9,3 +9,5 @@ class PetsFilterLocalEvent extends PetsEvents {
     required this.value,
   });
 }
+
+class AuthLogOutEvent extends PetsEvents {}
