@@ -1,3 +1,5 @@
+import 'package:app_pets/app/utils/navigation_service.dart';
+
 import 'theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -7,6 +9,8 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Modular.setNavigatorKey(NavigationService.navigatorKey);
+
     return MaterialApp.router(
       theme: ThemeData(
         useMaterial3: true,

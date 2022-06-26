@@ -18,10 +18,7 @@ class PetsDataSource implements IPetsDataSource {
 
     final resultCats = await clientHttp.get('/breeds');
 
-    final List<dynamic> listPets = [];
-
-    listPets.add(resultDogs);
-    listPets.add(resultCats);
+    final List<dynamic> listPets = [...resultDogs.data, ...resultCats.data];
 
     return listPets;
   }

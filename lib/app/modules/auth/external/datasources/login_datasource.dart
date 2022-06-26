@@ -10,7 +10,9 @@ class LoginDataSource implements ILoginDataSource {
 
   @override
   Future login({required String email}) async {
-    final response = await clientHttp.get('/login');
+    clientHttp.setBaseUrl('https://mocki.io/v1/');
+    final response =
+        await clientHttp.get('/54429d0e-f9e6-4340-8fba-fb20eb2112e7');
 
     final value = List.from(response.data).toList();
 
@@ -20,7 +22,7 @@ class LoginDataSource implements ILoginDataSource {
     );
 
     if (result.isNotEmpty) {
-      return result['email'];
+      return result;
     }
 
     return '';

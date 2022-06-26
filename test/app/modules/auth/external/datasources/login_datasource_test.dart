@@ -16,11 +16,12 @@ void main() {
 
   test('should return a Email if found in API', () async {
     when(
-      () => clientHttp.get('/login'),
+      () => clientHttp.get('/54429d0e-f9e6-4340-8fba-fb20eb2112e7'),
     ).thenAnswer(
       (_) async => BaseResponse(
         baseReponse,
-        BaseRequest(url: '/login', method: 'GET'),
+        BaseRequest(
+            url: '/54429d0e-f9e6-4340-8fba-fb20eb2112e7', method: 'GET'),
       ),
     );
 
@@ -31,11 +32,12 @@ void main() {
 
   test('should return a "" if not found a email in API', () async {
     when(
-      () => clientHttp.get('/login'),
+      () => clientHttp.get('/54429d0e-f9e6-4340-8fba-fb20eb2112e7'),
     ).thenAnswer(
       (_) async => BaseResponse(
         baseReponse,
-        BaseRequest(url: '/login', method: 'GET'),
+        BaseRequest(
+            url: '/54429d0e-f9e6-4340-8fba-fb20eb2112e7', method: 'GET'),
       ),
     );
 

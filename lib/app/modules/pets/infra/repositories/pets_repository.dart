@@ -17,7 +17,11 @@ class PetsReposistory implements IPetsRepository {
     try {
       final response = await petsDataSource.getPets();
 
-      final result = response.map(PetsAdapter.fromMap).toList();
+      late List<PetsEntity> result = [];
+
+      for (var item in response) {
+        result.add(PetsAdapter.fromMap(item));
+      }
 
       return right(result);
     } on PetsException catch (e) {

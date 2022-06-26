@@ -5,6 +5,7 @@ abstract class AppColors {
   Color get appBar;
   Color get title;
   Color get body;
+  Color get transparent;
 
   MaterialColor get primary;
 
@@ -15,10 +16,10 @@ abstract class AppColors {
 
 class AppColorDefault implements AppColors {
   @override
-  Color get appBar => Colors.black;
+  Color get appBar => Colors.white;
 
   @override
-  Color get title => Colors.black;
+  Color get title => primary;
 
   @override
   Color get body => Colors.black;
@@ -42,11 +43,14 @@ class AppColorDefault implements AppColors {
   //009342 - PAPAGAIO - cf1f36 BIO //004357 Cor legal
   //246EE9 Royal Blue //FF2400 Scarlet Red //3EB489 Mint Green
   @override
-  String get colorFinal => '004357';
+  String get colorFinal => 'FF2400';
 
   @override
   int get hexFinal => int.parse('$hex$colorFinal');
 
   @override
   MaterialColor get primary => MaterialColor(hexFinal, color);
+
+  @override
+  Color get transparent => Colors.transparent;
 }
