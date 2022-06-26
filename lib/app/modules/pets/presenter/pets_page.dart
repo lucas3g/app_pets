@@ -9,6 +9,7 @@ import 'package:app_pets/app/utils/loading_widget.dart';
 import 'package:app_pets/app/utils/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class PetsPage extends StatefulWidget {
   final PetsBloc petsBloc;
@@ -20,6 +21,7 @@ class PetsPage extends StatefulWidget {
 
 class _PetsPageState extends State<PetsPage> {
   late StreamSubscription sub;
+  final filterController = TextEditingController();
 
   @override
   void initState() {
@@ -59,6 +61,34 @@ class _PetsPageState extends State<PetsPage> {
               style: AppTheme.textStyles.titleList,
             ),
             const Divider(),
+            TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              controller: filterController,
+              onChanged: (value) {
+                widget.petsBloc.add(PetsFilterLocalEvent(value: value));
+              },
+              decoration: InputDecoration(
+                counterText: '',
+                hintText: 'Search by breed',
+                label: const Text('Breed'),
+                filled: true,
+                isDense: true,
+                fillColor: Colors.transparent,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: AppTheme.colors.primary,
+                  ),
+                ),
+              ),
+            ),
+            const Divider(),
             Expanded(
               child: BlocBuilder<PetsBloc, PetsStates>(
                   bloc: widget.petsBloc,
@@ -68,17 +98,37 @@ class _PetsPageState extends State<PetsPage> {
                           size: Size(context.screenHeight, 200), radius: 10);
                     }
 
-                    final pets = (state).pets;
+                    final pets = (state).filtredList;
+
+                    if (pets.isEmpty) {
+                      return const Center(
+                        child: Text('Empty data'),
+                      );
+                    }
 
                     return ListView.separated(
                       itemBuilder: (_, index) {
                         return Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(),
+                            border: Border.all(color: AppTheme.colors.primary),
                           ),
                           child: ListTile(
-                            title: Text(pets[index].breed),
+                            onTap: () async {
+                              await Modular.to.pushNamed('/pets/detail',
+                                  arguments: {
+                                    'pet': pets[index],
+                                    'index': index
+                                  });
+                            },
+                            leading: CircleAvatar(
+                              radius: 25,
+                              backgroundImage:
+                                  NetworkImage(pets[index].imagePet),
+                            ),
+                            title: Text('Breed: ${pets[index].breed}'),
+                            subtitle:
+                                Text('Life Span: ${pets[index].lifeSpan}'),
                           ),
                         );
                       },

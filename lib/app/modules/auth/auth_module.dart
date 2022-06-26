@@ -1,3 +1,4 @@
+import 'package:app_pets/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:app_pets/app/modules/auth/domain/repositories/login_repostory_interface.dart';
 import 'package:app_pets/app/modules/auth/domain/usecases/login_usecase.dart';
 import 'package:app_pets/app/modules/auth/external/datasources/login_datasource.dart';
@@ -37,6 +38,7 @@ class AuthModule extends Module {
       '/',
       child: ((context, args) => AuthPage(
             authBloc: Modular.get<AuthBloc>(),
+            localStorage: Modular.get<ILocalStorage>(),
           )),
     ),
   ];

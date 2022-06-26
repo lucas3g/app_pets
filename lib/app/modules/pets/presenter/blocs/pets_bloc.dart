@@ -11,18 +11,24 @@ class PetsBloc extends Bloc<PetsEvents, PetsStates> {
     required this.getPetsUseCase,
   }) : super(PetsInitialState()) {
     on<GetPetsAPIEvent>(_getPetsAPI);
+    on<PetsFilterLocalEvent>(_petsFilter);
   }
 
   Future<void> _getPetsAPI(GetPetsAPIEvent event, emit) async {
-    emit(PetsLoadingState());
+    emit(state.loading());
     final result = await getPetsUseCase();
     result.fold(
-      (error) => emit(
-        PetsErrorState(message: error.message),
-      ),
-      (success) => emit(
-        PetsSuccessState(pets: success),
-      ),
-    );
+        (error) => emit(
+              state.error(
+                error.message,
+              ),
+            ), (success) {
+      success.shuffle();
+      return emit(state.success(pets: success));
+    });
+  }
+
+  void _petsFilter(PetsFilterLocalEvent event, emit) {
+    emit(state.success(filter: event.value));
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app_pets/app/core_module/services/shared_preferences/adapters/shared_params.dart';
+import 'package:app_pets/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:app_pets/app/modules/auth/domain/params/login_params.dart';
 import 'package:app_pets/app/modules/auth/presenter/blocs/auth_bloc.dart';
 import 'package:app_pets/app/modules/auth/presenter/blocs/events/auth_events.dart';
@@ -14,7 +16,9 @@ import 'package:lottie/lottie.dart';
 
 class AuthPage extends StatefulWidget {
   final AuthBloc authBloc;
-  const AuthPage({Key? key, required this.authBloc}) : super(key: key);
+  final ILocalStorage localStorage;
+  const AuthPage({Key? key, required this.authBloc, required this.localStorage})
+      : super(key: key);
 
   @override
   State<AuthPage> createState() => _AuthPageState();
@@ -25,12 +29,19 @@ class _AuthPageState extends State<AuthPage> {
 
   late StreamSubscription sub;
 
+  Future<void> saveLogin() async {
+    await widget.localStorage
+        .setData(params: SharedParams(key: 'logado', value: 'S'));
+  }
+
   @override
   void initState() {
     super.initState();
 
     sub = widget.authBloc.stream.listen((state) async {
       if (state is AuthSuccessState) {
+        await saveLogin();
+
         await Future.delayed(const Duration(milliseconds: 500));
         Modular.to.navigate('/pets/');
       }
@@ -64,14 +75,14 @@ class _AuthPageState extends State<AuthPage> {
                 ),
                 Column(
                   children: [
-                    const Text('Acesso ao aplicativo'),
+                    const Text('App access'),
                     const SizedBox(height: 15),
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       controller: emailController,
                       decoration: InputDecoration(
                         counterText: '',
-                        hintText: 'Digite seu email',
+                        hintText: 'Type your e-mail',
                         label: const Text('Email'),
                         filled: true,
                         isDense: true,
@@ -108,13 +119,13 @@ class _AuthPageState extends State<AuthPage> {
                                 );
                               },
                               icon: const Icon(Icons.login_rounded),
-                              label: const Text('Entrar'),
+                              label: const Text('Sign In'),
                             ),
                           );
                         }),
                   ],
                 ),
-                const Text('Todos os direitos reservados'),
+                const SizedBox(),
               ],
             ),
           ),

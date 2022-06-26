@@ -18,8 +18,7 @@ class SharedPreferencesService implements ILocalStorage {
       return result;
     }
 
-    throw SharedPreferencesException(
-        'There is no key ($key) passed as a parameter');
+    return SharedPreferencesException('non-existent key');
   }
 
   @override

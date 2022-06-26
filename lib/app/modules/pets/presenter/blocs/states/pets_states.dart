@@ -1,19 +1,61 @@
 import 'package:app_pets/app/modules/pets/domain/entities/pets_entity.dart';
 
-abstract class PetsStates {}
+abstract class PetsStates {
+  final List<PetsEntity> pets;
+  final String filter;
 
-class PetsInitialState extends PetsSuccessState {
-  PetsInitialState() : super(pets: []);
+  PetsSuccessState success({List<PetsEntity>? pets, String? filter}) {
+    return PetsSuccessState(
+      pets: pets ?? this.pets,
+      filter: filter ?? this.filter,
+    );
+  }
+
+  PetsLoadingState loading() {
+    return PetsLoadingState(
+      pets: pets,
+      filter: filter,
+    );
+  }
+
+  PetsErrorState error(String message) {
+    return PetsErrorState(
+      message: message,
+      filter: filter,
+      pets: pets,
+    );
+  }
+
+  List<PetsEntity> get filtredList {
+    if (filter.isEmpty) {
+      return pets;
+    }
+
+    return pets
+        .where(
+          (pet) => (pet.breed.toLowerCase().contains(
+                filter.toLowerCase(),
+              )),
+        )
+        .toList();
+  }
+
+  PetsStates({
+    required this.pets,
+    required this.filter,
+  });
 }
 
-class PetsLoadingState extends PetsStates {}
+class PetsInitialState extends PetsSuccessState {
+  PetsInitialState() : super(pets: [], filter: '');
+}
+
+class PetsLoadingState extends PetsStates {
+  PetsLoadingState({required super.pets, required super.filter});
+}
 
 class PetsSuccessState extends PetsStates {
-  final List<PetsEntity> pets;
-
-  PetsSuccessState({
-    required this.pets,
-  });
+  PetsSuccessState({required super.pets, required super.filter});
 }
 
 class PetsErrorState extends PetsStates {
@@ -21,5 +63,7 @@ class PetsErrorState extends PetsStates {
 
   PetsErrorState({
     required this.message,
+    required super.pets,
+    required super.filter,
   });
 }

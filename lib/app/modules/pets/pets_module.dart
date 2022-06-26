@@ -5,6 +5,7 @@ import 'package:app_pets/app/modules/pets/infra/datasources/pets_datasources_int
 import 'package:app_pets/app/modules/pets/infra/repositories/pets_repository.dart';
 import 'package:app_pets/app/modules/pets/presenter/blocs/pets_bloc.dart';
 import 'package:app_pets/app/modules/pets/presenter/pets_page.dart';
+import 'package:app_pets/app/modules/pets/presenter/widgets/detail_pets_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class PetsModule extends Module {
@@ -38,6 +39,10 @@ class PetsModule extends Module {
       child: ((context, args) => PetsPage(
             petsBloc: Modular.get<PetsBloc>(),
           )),
+    ),
+    ChildRoute(
+      '/detail',
+      child: (context, args) => const DetailPetPage(),
     ),
   ];
 }
