@@ -26,33 +26,30 @@ class _DetailPetPageState extends State<DetailPetPage> {
         ),
         centerTitle: true,
       ),
-      body: Material(
-        type: MaterialType.transparency,
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        width: context.screenWidth,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CachedNetworkImage(
-                  imageUrl: pet.imagePet,
-                  width: context.screenWidth * 0.5,
-                ),
-                const SizedBox(width: 10),
-                SizedBox(
-                  width: context.screenWidth * 0.4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Temperament: ${pet.temperament}',
-                      ),
-                      Text(
-                        'Origin: ${pet.origin}',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            Center(
+              child: CachedNetworkImage(
+                imageUrl: pet.imagePet,
+                width: context.screenWidth * 0.5,
+                errorWidget: (_, __, ___) {
+                  return Icon(
+                    Icons.error_outline_rounded,
+                    color: AppTheme.colors.primary,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Temperament: ${pet.temperament}',
+            ),
+            Text(
+              'Origin: ${pet.origin}',
             )
           ],
         ),

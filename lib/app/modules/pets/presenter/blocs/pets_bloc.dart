@@ -27,7 +27,7 @@ class PetsBloc extends Bloc<PetsEvents, PetsStates> {
                 error.message,
               ),
             ), (success) {
-      success.shuffle();
+      success.sort((a, b) => a.breed.compareTo(b.breed));
       return emit(state.success(pets: success));
     });
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app_pets/app/modules/pets/presenter/blocs/events/pets_events.dart';
 import 'package:app_pets/app/modules/pets/presenter/blocs/pets_bloc.dart';
 import 'package:app_pets/app/modules/pets/presenter/blocs/states/pets_states.dart';
+import 'package:app_pets/app/modules/pets/presenter/widgets/card_pets_widget.dart';
 import 'package:app_pets/app/theme/app_theme.dart';
 import 'package:app_pets/app/utils/constants.dart';
 import 'package:app_pets/app/utils/loading_widget.dart';
@@ -73,7 +74,7 @@ class _PetsPageState extends State<PetsPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'List of pets',
+              'Pets list',
               style: AppTheme.textStyles.titleList,
             ),
             const Divider(),
@@ -123,37 +124,25 @@ class _PetsPageState extends State<PetsPage> {
                       );
                     }
 
-                    return ListView.separated(
-                      itemBuilder: (_, index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: AppTheme.colors.primary),
-                          ),
-                          child: ListTile(
-                            onTap: () async {
-                              await Modular.to.pushNamed('/pets/detail',
-                                  arguments: {
-                                    'pet': pets[index],
-                                    'index': index
-                                  });
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ListView.separated(
+                            itemBuilder: (_, index) {
+                              return CardPetsWidget(
+                                  pets: pets[index], index: index);
                             },
-                            leading: CircleAvatar(
-                              radius: 25,
-                              backgroundImage:
-                                  NetworkImage(pets[index].imagePet),
-                            ),
-                            title: Text('Breed: ${pets[index].breed}'),
-                            subtitle:
-                                Text('Life Span: ${pets[index].lifeSpan}'),
+                            separatorBuilder: (_, __) =>
+                                const SizedBox(height: 10),
+                            itemCount: pets.length,
                           ),
-                        );
-                      },
-                      separatorBuilder: (_, __) => const SizedBox(height: 10),
-                      itemCount: pets.length,
+                        ),
+                        Text('Total Pets: ${pets.length}')
+                      ],
                     );
                   }),
-            )
+            ),
           ],
         ),
       ),

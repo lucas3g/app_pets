@@ -60,7 +60,7 @@ class _AuthPageState extends State<AuthPage> {
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: SizedBox(
-            height: context.screenHeight * 0.95,
+            height: context.screenHeight * 0.93,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
