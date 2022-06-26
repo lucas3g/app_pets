@@ -27,7 +27,7 @@ void main() {
 
     final result = await loginDataSource.login(email: 'teste@gmail.com');
 
-    expect(result, 'teste@gmail.com');
+    expect(result, {'email': 'teste@gmail.com'});
   });
 
   test('should return a "" if not found a email in API', () async {
