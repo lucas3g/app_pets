@@ -15,11 +15,16 @@ class PetsReposistory implements IPetsRepository {
   @override
   Future<Either<IPetsException, List<PetsEntity>>> getPets() async {
     try {
-      final response = await petsDataSource.getPets();
+      final resultDogs = await petsDataSource.getDogs();
+      final resultCats = await petsDataSource.getCats();
 
       late List<PetsEntity> result = [];
 
-      for (var item in response) {
+      for (var item in resultDogs) {
+        result.add(PetsAdapter.fromMap(item));
+      }
+
+      for (var item in resultCats) {
         result.add(PetsAdapter.fromMap(item));
       }
 

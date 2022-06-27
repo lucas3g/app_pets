@@ -18,7 +18,11 @@ void main() {
 
   test('should return list of PetsEntity', () async {
     when(
-      () => petsDataSource.getPets(),
+      () => petsDataSource.getCats(),
+    ).thenAnswer((_) async => <PetsEntity>[]);
+
+    when(
+      () => petsDataSource.getDogs(),
     ).thenAnswer((_) async => <PetsEntity>[]);
 
     final result = await petsReposistory.getPets();

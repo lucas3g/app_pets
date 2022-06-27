@@ -163,10 +163,22 @@ class _AuthPageState extends State<AuthPage> {
                                             color: Colors.white,
                                             size: 20,
                                           )
-                                        : Text(
-                                            'Sign in',
-                                            style:
-                                                AppTheme.textStyles.buttonSigin,
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.login,
+                                                color:
+                                                    AppTheme.colors.iconLogin,
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                'Sign in',
+                                                style: AppTheme
+                                                    .textStyles.buttonSigin,
+                                              ),
+                                            ],
                                           ),
                               ),
                             ),

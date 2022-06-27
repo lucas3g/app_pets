@@ -1,6 +1,6 @@
 import 'package:app_pets/app/modules/pets/domain/repositories/pets_repository_interface.dart';
 import 'package:app_pets/app/modules/pets/domain/usecases/get_pets_usecase.dart';
-import 'package:app_pets/app/modules/pets/external/datasources/pets_datasource.dart';
+import 'package:app_pets/app/modules/pets/external/datasources/get_pets_datasource.dart';
 import 'package:app_pets/app/modules/pets/infra/datasources/pets_datasources_interface.dart';
 import 'package:app_pets/app/modules/pets/infra/repositories/pets_repository.dart';
 import 'package:app_pets/app/modules/pets/presenter/blocs/pets_bloc.dart';
@@ -13,7 +13,7 @@ class PetsModule extends Module {
   final List<Bind> binds = [
     //DATASOURCES
     Bind.factory<IPetsDataSource>(
-      (i) => PetsDataSource(clientHttp: i()),
+      (i) => GetPetsDataSource(clientHttp: i()),
     ),
 
     //REPOSITORIES

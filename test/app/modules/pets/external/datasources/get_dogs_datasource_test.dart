@@ -1,5 +1,5 @@
 import 'package:app_pets/app/core_module/services/client_http/client_http_interface.dart';
-import 'package:app_pets/app/modules/pets/external/datasources/pets_datasource.dart';
+import 'package:app_pets/app/modules/pets/external/datasources/get_pets_datasource.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -7,11 +7,11 @@ class ClientHttpMock extends Mock implements IClientHttp {}
 
 void main() {
   late IClientHttp clientHttp;
-  late PetsDataSource petsDataSource;
+  late GetPetsDataSource getDogsDataSource;
 
   setUp(() {
     clientHttp = ClientHttpMock();
-    petsDataSource = PetsDataSource(clientHttp: clientHttp);
+    getDogsDataSource = GetPetsDataSource(clientHttp: clientHttp);
   });
 
   test('should return a list when petsDataSource.getPets is called', () async {
@@ -24,7 +24,22 @@ void main() {
       ),
     );
 
-    final result = await petsDataSource.getPets();
+    final result = await getDogsDataSource.getCats();
+
+    expect(result, isA<List<dynamic>>());
+  });
+
+  test('should return a list when petsDataSource.getPets is called', () async {
+    when(
+      () => clientHttp.get('/breeds'),
+    ).thenAnswer(
+      (_) async => BaseResponse(
+        dataJson,
+        BaseRequest(url: '/breeds', method: 'GET'),
+      ),
+    );
+
+    final result = await getDogsDataSource.getDogs();
 
     expect(result, isA<List<dynamic>>());
   });
